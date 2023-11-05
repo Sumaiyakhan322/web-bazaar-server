@@ -10,7 +10,7 @@ app.use(express.json())
 
 
 
-const uri = "mongodb+srv://<username>:<password>@cluster0.ej2tmfe.mongodb.net/?retryWrites=true&w=majority";
+const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.ej2tmfe.mongodb.net/?retryWrites=true&w=majority`;
 
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
 const client = new MongoClient(uri, {
@@ -25,6 +25,17 @@ async function run() {
   try {
     // Connect the client to the server	(optional starting in v4.7)
     // await client.connect();
+
+    //make a db collection
+    const jobsCollection=client.db('JobsDb').collection("Jobs");
+    
+
+    //add jobs to mongodb
+    app.post('/addJobs',async(req,res)=>{
+      const newJob=req.body;
+      const result=await jobsCollection.insertOne(newJob);
+      res.send(result);
+    })
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
     console.log("Pinged your deployment. You successfully connected to MongoDB!");
@@ -38,7 +49,7 @@ run().catch(console.dir);
 
 
 app.get('/',(req,res)=>{
-    res.send("doctor is running")
+    res.send("Web-bazaar is running")
 
 })
 app.listen(port, ()=>{
