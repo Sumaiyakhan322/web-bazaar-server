@@ -28,6 +28,7 @@ async function run() {
 
     //make a db collection
     const jobsCollection=client.db('JobsDb').collection("Jobs");
+    const userBidsCollection=client.db('JobsDb').collection('usersBid');
     
 
     //add jobs to mongodb
@@ -47,8 +48,17 @@ async function run() {
       const id=req.params.id
       const query={_id:new ObjectId(id)}
       const result =await jobsCollection.findOne(query);
+     
      res.send(result)
 
+    })
+    
+
+    //post user bid data to mongo
+    app.post('/usersBids',async(req,res)=>{
+      const newBids=req.body;
+      const result =await userBidsCollection.insertOne(newBids)
+      res.send(result)
     })
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
