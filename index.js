@@ -37,13 +37,13 @@ async function run() {
       const result=await jobsCollection.insertOne(newJob);
       res.send(result);
     })
-    //get all the products
+    //get all the jobs
     app.get('/addJobs',async(req,res)=>{
       const cursor=jobsCollection.find();
       const result=await cursor.toArray();
       res.send(result)
     })
-    //get a product
+    //get a job
     app.get('/addJobs/:id',async(req,res)=>{
       const id=req.params.id
       const query={_id:new ObjectId(id)}
@@ -51,6 +51,13 @@ async function run() {
      
      res.send(result)
 
+    })
+    //delete a job
+    app.delete('/addJobs/:id',async(req,res)=>{
+      const id=req.params.id;
+      const query={_id:new ObjectId(id)}
+      const result=await jobsCollection.deleteOne(query)
+      res.send(result)
     })
     
 
