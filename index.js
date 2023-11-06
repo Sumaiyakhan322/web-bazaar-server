@@ -1,12 +1,27 @@
 const express = require('express');
+const jwt = require("jsonwebtoken");
 const cors = require('cors');
+var cookieParser = require("cookie-parser");
 const app=express()
 const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 require('dotenv').config();
 const port =process.env.PORT  || 5000
 //middle ware
-app.use(cors())
+app.use(cors({
+  origin: [
+   
+    // "https://car-doctor-31a28.web.app",
+    // "https://car-doctor-31a28.firebaseapp.com",
+    'http://localhost:5173'
+      
+      
+  ],
+  credentials: true,
+}
+
+))
 app.use(express.json())
+app.use(cookieParser());
 
 
 
@@ -30,7 +45,22 @@ async function run() {
     const jobsCollection=client.db('JobsDb').collection("Jobs");
     const userBidsCollection=client.db('JobsDb').collection('usersBid');
     
-
+    //auth route
+    app.post('/jwt',async(req,res)=>{
+      const user = req.body;
+      const token = jwt.sign(user, process.env.ACCESS_TOKEN, {
+        expiresIn: "1000h",
+      });
+      console.log(token);
+      res
+        .cookie("token", token, {
+          httpOnly: true,
+          secure: true,
+          sameSite: "none",
+        })
+        .send({ success: true });
+    });
+  
     //add jobs to mongodb
     app.post('/addJobs',async(req,res)=>{
       const newJob=req.body;
