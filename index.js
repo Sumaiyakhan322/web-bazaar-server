@@ -59,7 +59,27 @@ async function run() {
       const result=await jobsCollection.deleteOne(query)
       res.send(result)
     })
-    
+    //update a job
+    app.put('/addJobs/:id',async(req,res)=>{
+      const id=req.params.id;
+      const filter={_id:new ObjectId(id)}
+      const options={upset:true}
+      const updateJob=req.body;
+      const job={
+        $set:{
+         email:updateJob.email,
+         jobTile:updateJob.jobTile,
+        img:updateJob.img,
+        deadline:updateJob.deadline ,
+         category:updateJob.category ,
+         minimum:updateJob.minimum ,
+         maximum:updateJob.maximum ,
+         des:updateJob.des ,
+        }
+      }
+      const result=await jobsCollection.updateOne(filter,job,options)
+      res.send(result)
+    })
 
     //post user bid data to mongo
     app.post('/usersBids',async(req,res)=>{
