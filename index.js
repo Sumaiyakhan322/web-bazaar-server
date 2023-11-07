@@ -10,8 +10,8 @@ const port =process.env.PORT  || 5000
 app.use(cors({
   origin: [
    
-    // "https://car-doctor-31a28.web.app",
-    // "https://car-doctor-31a28.firebaseapp.com",
+    "https://webbazaar-creations.web.app",
+    "https://webbazaar-creations.firebaseapp.com",
     'http://localhost:5173'
       
       
