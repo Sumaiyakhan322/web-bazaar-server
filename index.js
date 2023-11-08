@@ -15,7 +15,7 @@ app.use(
       "https://webbazaar-creations.firebaseapp.com",
       "http://localhost:5173",
     ],
-    credentials: true,
+    credentials:true
   }
   )
 );
