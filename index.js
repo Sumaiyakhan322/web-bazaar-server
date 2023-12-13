@@ -30,6 +30,7 @@ async function run() {
     //make a db collection
     const jobsCollection = client.db("JobsDb").collection("Jobs");
     const userBidsCollection = client.db("JobsDb").collection("usersBid");
+    const toTextCollection=client.db('JobsDb').collection('toTest')
 
     //auth route
     app.post("/jwt", async (req, res) => {
@@ -155,6 +156,17 @@ async function run() {
       const result = await userBidsCollection.updateOne(filter, updateDoc);
       res.send(result);
     });
+    app.get("/toTest", async (req, res) => {
+      const cursor = toTextCollection.find();
+      const result = await cursor.toArray();
+      res.send(result);
+    });
+    app.post("/toTest", async (req, res) => {
+      const toTest = req.body;
+      const result = await toTextCollection.insertOne(toTest);
+      res.send(result);
+    });
+    
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
     console.log(
