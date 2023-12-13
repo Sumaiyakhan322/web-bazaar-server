@@ -7,18 +7,7 @@ const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 require("dotenv").config();
 const port = process.env.PORT || 5000;
 //middle ware
-app.use(
-  cors(
-    {
-    origin: [
-      "https://webbazaar-creations.web.app",
-      "https://webbazaar-creations.firebaseapp.com",
-      "http://localhost:5173",
-    ],
-    credentials:true
-  }
-  )
-);
+app.use(cors())
 app.use(express.json());
 app.use(cookieParser());
 
