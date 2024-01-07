@@ -24,33 +24,14 @@ const client = new MongoClient(uri, {
 
 async function run() {
   try {
-    // Connect the client to the server	(optional starting in v4.7)
-    // await client.connect();
+   
 
     //make a db collection
     const jobsCollection = client.db("JobsDb").collection("Jobs");
     const userBidsCollection = client.db("JobsDb").collection("usersBid");
     const toTextCollection=client.db('JobsDb').collection('toTest')
 
-    //auth route
-    app.post("/jwt", async (req, res) => {
-      const user = req.body;
-      const token = jwt.sign(user, process.env.ACCESS_TOKEN, {
-        expiresIn: "1000h",
-      });
-      console.log(token);
-      res
-        .cookie("token", token, {
-          httpOnly: true,
-          secure: true,
-          sameSite: "none",
-        })
-        .send({ success: true });
-    });
-    app.post("/logout", async (req, res) => {
-      const user = req.body;
-      res.clearCookie("token", { maxAge: 0 }).send({ success: true });
-    });
+  
 
     //add jobs to mongodb
     app.post("/addJobs", async (req, res) => {
@@ -87,7 +68,7 @@ async function run() {
       const job = {
         $set: {
           email: updateJob.email,
-          jobTile: updateJob.jobTile,
+          name: updateJob.name,
           img: updateJob.img,
           deadline: updateJob.deadline,
           category: updateJob.category,
@@ -173,8 +154,7 @@ async function run() {
       "Pinged your deployment. You successfully connected to MongoDB!"
     );
   } finally {
-    // Ensures that the client will close when you finish/error
-    //await client.close();
+   
   }
 }
 run().catch(console.dir);
